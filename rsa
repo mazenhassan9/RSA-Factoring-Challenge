@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+check_factor()
+{
+    num=$1
+    factors=($(factor "$num" | awk '{ for (i=2; i<=NF; i++) print $i }'))
+    
+    if [ "${#factors[@]}" -eq 2 ]; then
+        echo "$num=${factors[0]}*${factors[1]}"
+    else
+        echo "Error: Unable to factorize $num"
+    fi
+}
+
+if [ $# -ne 1 ]; then
+    echo 'Usage: rsa <file>'
+    exit 1
+else
+    while read -r i; do
+        check_factor "$i"
+    done < "$1"
+fi
